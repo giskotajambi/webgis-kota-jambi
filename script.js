@@ -49,7 +49,7 @@ var peta5 = L.tileLayer('https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
     attribution: 'Map data © <a href="https://www.google.com/maps">Google Maps</a>'
 });
 
-var peta6 = L.tileLayer.wms('https://petadasar.atrbpn.go.id/main/wms/{x}/{y}/{z}', {
+var peta6 = L.tileLayer.wms('http://localhost:3000/atrbpn-proxy/main/wms/{x}/{y}/{z}', {
     maxZoom: 20,
     layers: 'ATRBPN.Citra_Nasional',
     format: 'image/jpeg',
