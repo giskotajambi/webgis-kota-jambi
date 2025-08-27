@@ -1,0 +1,27 @@
+{
+  "rewrites": [
+    {
+      "source": "/atrbpn/:path*",
+      "destination": "https://petadasar.atrbpn.go.id/main/wms/:path*"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/atrbpn/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "Content-Type"
+        }
+      ]
+    }
+  ]
+}
