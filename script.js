@@ -49,11 +49,6 @@ var peta5 = L.tileLayer('https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
     attribution: 'Map data © <a href="https://www.google.com/maps">Google Maps</a>'
 });
 
-var peta6 = L.tileLayer('https://atrbpn-proxy-3velmreqj-helkuns-projects.vercel.app/atrbpn-proxy/main/wms/{x}/{y}/{z}', {
-  maxZoom: 20,
-  attribution: 'Peta Dasar ATRBPN'
-});
-
 // Define default view coordinates and zoom
 const defaultCenter = [-1.6108583427442669, 103.6163445212305];
 const defaultZoom = 13;
@@ -117,7 +112,6 @@ const baseLayers = {
     'Open Street Map': peta3,
     'CARTO': peta4,
     'Google Hybrid': peta5,
-    'ATRBPN': peta6,
 };
 L.control.layers(baseLayers).addTo(map);
 map.attributionControl.setPrefix(false);
