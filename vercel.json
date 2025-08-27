@@ -1,4 +1,10 @@
 {
+  "builds": [
+    {
+      "src": "public/**/*",
+      "use": "@vercel/static-build"
+    }
+  ],
   "rewrites": [
     {
       "source": "/atrbpn/:path*",
