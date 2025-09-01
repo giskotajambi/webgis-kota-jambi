@@ -83,6 +83,42 @@ map.on("click", function(e) {
     lngInput.value = e.latlng.lng;
 });
 
+// Leaflet Draw Control
+var drawnFeatures = new L.FeatureGroup();
+map.addLayer(drawnFeatures);
+
+var drawControl = new L.Control.Draw({
+    position: 'bottomright',
+    draw: {
+        polygon: {
+            showArea: true    // Aktifkan perhitungan area
+        },
+        rectangle: true,
+        marker: true,
+        polyline: true,
+        circle: true,
+        circlemarker: true
+    },
+    edit: {
+        featureGroup: drawnFeatures,
+        remove: true
+    }
+});
+map.addControl(drawControl);
+
+// Hitung luas area (dalam hektar) dan tampilkan popup saat selesai menggambar
+map.on('draw:created', function (e) {
+    var layer = e.layer;
+    drawnFeatures.addLayer(layer);
+
+    // Hitung area jika layer berupa polygon atau rectangle
+    if (layer instanceof L.Polygon || layer instanceof L.Rectangle) {
+        var area_m2 = L.GeometryUtil.geodesicArea(layer.getLatLngs()[0]);
+        var area_ha = (area_m2 / 10000).toFixed(2); // konversi m2 ke hektar
+        layer.bindPopup('Area: ' + area_ha + ' ha').openPopup();
+    }
+});
+
 // --- Geocoder Search Control (for general locations) ---
 var geocoder = L.Control.geocoder({
     defaultMarkGeocode: false, // We use our own marker
