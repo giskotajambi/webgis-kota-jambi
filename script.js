@@ -83,41 +83,47 @@ map.on("click", function(e) {
     lngInput.value = e.latlng.lng;
 });
 
-// Leaflet Draw Control
-var drawnFeatures = new L.FeatureGroup();
-map.addLayer(drawnFeatures);
+//Leaflet Draw Events
+// Buat layer baru untuk menyimpan semua bentuk yang digambar
+const drawnItems = new L.FeatureGroup();
+map.addLayer(drawnItems);
 
-var drawControl = new L.Control.Draw({
+// Konfigurasi kontrol draw
+const drawControl = new L.Control.Draw({
     position: 'bottomright',
-    draw: {
-        polygon: {
-            showArea: true    // Aktifkan perhitungan area
-        },
-        rectangle: true,
-        marker: true,
-        polyline: true,
-        circle: true,
-        circlemarker: true
-    },
     edit: {
-        featureGroup: drawnFeatures,
-        remove: true
+        featureGroup: drawnItems
+    },
+    draw: {
+        polygon: { showArea: true }, // Aktifkan perhitungan area
+        polyline: true,
+        rectangle: true,
+        circle: true,
+        marker: true,
+        circlemarker: true
     }
 });
 map.addControl(drawControl);
 
-// Hitung luas area (dalam hektar) dan tampilkan popup saat selesai menggambar
-map.on('draw:created', function (e) {
-    var layer = e.layer;
-    drawnFeatures.addLayer(layer);
 
-    // Hitung area jika layer berupa polygon atau rectangle
+// Tangani event saat sebuah bentuk baru selesai digambar
+map.on(L.Draw.Event.CREATED, function (event) {
+    const layer = event.layer;
+    drawnItems.addLayer(layer);
+
+    // Periksa apakah layer yang digambar adalah poligon atau persegi
     if (layer instanceof L.Polygon || layer instanceof L.Rectangle) {
-        var area_m2 = L.GeometryUtil.geodesicArea(layer.getLatLngs()[0]);
-        var area_ha = (area_m2 / 10000).toFixed(2); // konversi m2 ke hektar
-        layer.bindPopup('Area: ' + area_ha + ' ha').openPopup();
+        // Hitung luas area dalam meter persegi, lalu konversi ke hektar
+        const area_m2 = L.GeometryUtil.geodesicArea(layer.getLatLngs()[0]);
+        const area_ha = (area_m2 / 10000).toFixed(2); // konversi m2 ke hektar dan bulatkan 2 desimal
+
+        // Buat dan tampilkan popup dengan luas area
+        layer.bindPopup('Luas: ' + area_ha + ' ha').openPopup();
     }
+    
+    console.log('Bentuk baru telah digambar!', layer);
 });
+//End Leaflet Draw Events
 
 // --- Geocoder Search Control (for general locations) ---
 var geocoder = L.Control.geocoder({
