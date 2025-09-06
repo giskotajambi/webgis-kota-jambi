@@ -122,22 +122,16 @@ map.on('draw:created', function (e) {
 // --- Geocoder Search Control (for general locations) ---
 var geocoder = L.Control.geocoder({
     defaultMarkGeocode: false, // We use our own marker
-    placeholder: 'Cari lokasi...',
+    placeholder: 'Cari lokasi di seluruh dunia...',
     errorMessage: 'Lokasi tidak ditemukan.',
-    geocoder: new L.Control.Geocoder.Nominatim({
-        geocodingQueryParams: {
-            countrycodes: 'id', // Prioritize results in Indonesia
-            viewbox: '103.50,-1.75,103.75,-1.50', // Bounding box for Jambi City
-            bounded: 1
-        }
-    })
+    geocoder: new L.Control.Geocoder.Nominatim() // Tanpa parameter query yang membatasi area
 })
 .on('markgeocode', function(e) {
     var center = e.geocode.center;
     map.setView(center, 17);
     marker.setLatLng(center);
     latInput.value = center.lat;
-    lngInput.value = center.lat;
+    lngInput.value = center.lng;
 })
 .addTo(map);
 
